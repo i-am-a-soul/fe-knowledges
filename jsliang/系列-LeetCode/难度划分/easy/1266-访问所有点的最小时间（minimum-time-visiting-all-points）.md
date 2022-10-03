@@ -1,0 +1,228 @@
+1266 - 访问所有点的最小时间（minimum-time-visiting-all-points）
+===
+
+> Create by **jsliang** on **2020-02-01 16:12:50**  
+> Recently revised in **2020-02-01 16:36:08**
+
+## 一 目录
+
+**不折腾的前端，和咸鱼有什么区别**
+
+| 目录 |
+| --- | 
+| [一 目录](#chapter-one) | 
+| [二 前言](#chapter-two) |
+| [三 解题及测试](#chapter-three) |
+| [四 LeetCode Submit](#chapter-four) |
+| [五 解题思路](#chapter-five) |
+
+## 二 前言
+
+
+
+* **难度**：简单
+* **涉及知识**：几何、数组
+* **题目地址**：https://leetcode-cn.com/problems/minimum-time-visiting-all-points/
+* **题目内容**：
+
+平面上有 n 个点，点的位置用整数坐标表示 points[i] = [xi, yi]。
+
+请你计算访问所有这些点需要的最小时间（以秒为单位）。
+
+你可以按照下面的规则在平面上移动：
+
+每一秒沿水平或者竖直方向移动一个单位长度，
+
+或者跨过对角线（可以看作在一秒内向水平和竖直方向各移动一个单位长度）。
+
+必须按照数组中出现的顺序来访问这些点。
+
+---
+
+示例 1：
+
+![图](../../../public-repertory/img/other-algorithm-1266-1.png)
+
+* 输入：points = [[1,1],[3,4],[-1,0]]
+* 输出：7
+* 解释：一条最佳的访问路径是： [1,1] -> [2,2] -> [3,3] -> [3,4] -> [2,3] -> [1,2] -> [0,1] -> [-1,0]   
+
+```
+从 [1,1] 到 [3,4] 需要 3 秒 
+从 [3,4] 到 [-1,0] 需要 4 秒
+一共需要 7 秒
+```
+
+---
+
+示例 2：
+
+* 输入：points = [[3,2],[-2,2]]
+* 输出：5
+
+提示：
+
+1. points.length == n
+2. 1 <= n <= 100
+3. points[i].length == 2
+4. -1000 <= points[i][0], points[i][1] <= 1000
+
+* 来源：力扣（LeetCode）
+* 链接：https://leetcode-cn.com/problems/minimum-time-visiting-all-points
+* 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+## 三 解题及测试
+
+
+
+小伙伴可以先自己在本地尝试解题，再回来看看 **jsliang** 的解题思路。
+
+* **LeetCode 给定函数体**：
+
+```js
+/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+var minTimeToVisitAllPoints = function(points) {
+    
+};
+```
+
+根据上面的已知函数，尝试破解本题吧~
+
+确定了自己的答案再看下面代码哈~
+
+> index.js
+
+```js
+/**
+ * @name 访问所有点的最小时间
+ * @param {number[][]} points
+ * @return {number}
+ */
+const minTimeToVisitAllPoints = (points) => {
+  let result = 0;
+  for (let i = 0; i < points.length - 1; i++) {
+    const x1 = points[i][0];
+    const y1 = points[i][1];
+    const x2 = points[i + 1][0];
+    const y2 = points[i + 1][1];
+    result += Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+  }
+  return result;
+};
+
+console.log(minTimeToVisitAllPoints([[1, 1], [3, 4], [-1, 0]])); // 7
+```
+
+`node index.js` 返回：
+
+```js
+7
+```
+
+## 四 LeetCode Submit
+
+
+
+```js
+Accepted
+* 122/122 cases passed (72 ms)
+* Your runtime beats 54.19 % of javascript submissions
+* Your memory usage beats 84.66 % of javascript submissions (34.7 MB)
+```
+
+## 五 解题思路
+
+
+
+说难不难，说简单也简单（就是很简单）。
+
+观察题目，注意以下几点：
+
+1. 只能按照 `points` 顺序前行。
+2. 只能按 米 字状一次移动一个。
+
+已知有数组：`[[1, 1], [3, 4], [-1, 0]]`
+
+那么，我们从 `[1, 1] => [3, 4]` 需要多久时间呢？
+
+答案：4 - 1 = 3
+
+那么，我们从 `[3, 4] => [-1, 0]` 需要多久时间呢？
+
+答案：4 - 0 = 4 或者 3 - -1 = 4
+
+小心求证大胆假设，按照这样的说法，我们是不是应该有公式：
+
+* Math.max( | y2 - y1 |, | x2 - x1 |)
+
+其中 || 为求绝对值，毕竟时间为正的。
+
+所以，咱们小心求证试试：
+
+> 找规律
+
+```js
+const minTimeToVisitAllPoints = (points) => {
+  let result = 0;
+  for (let i = 0; i < points.length - 1; i++) {
+    result += Math.max(Math.abs(points[i + 1][0] - points[i][0]), Math.abs(points[i + 1][1] - points[i][1]));
+  }
+  return result;
+};
+```
+
+Submit 提交：
+
+```js
+Accepted
+* 122/122 cases passed (72 ms)
+* Your runtime beats 54.19 % of javascript submissions
+* Your memory usage beats 84.66 % of javascript submissions (34.7 MB)
+```
+
+OK，搞定完事~
+
+为了方便好看点，**jsliang** 优化下：
+
+> 找规律【优化】
+
+```js
+const minTimeToVisitAllPoints = (points) => {
+  let result = 0;
+  for (let i = 0; i < points.length - 1; i++) {
+    const x1 = points[i][0];
+    const y1 = points[i][1];
+    const x2 = points[i + 1][0];
+    const y2 = points[i + 1][1];
+    result += Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+  }
+  return result;
+};
+```
+
+Submit 提交：
+
+```js
+Accepted
+* 122/122 cases passed (64 ms)
+* Your runtime beats 88.37 % of javascript submissions
+* Your memory usage beats 80.83 % of javascript submissions (34.7 MB)
+```
+
+OK，如果小伙伴们有更好的思路想法，欢迎评论留言或者私聊 **jsliang**~
+
+---
+
+**不折腾的前端，和咸鱼有什么区别！**
+
+![图](../../../public-repertory/img/z-index-small.png)
+
+**jsliang** 会每天更新一道 LeetCode 题解，从而帮助小伙伴们夯实原生 JS 基础，了解与学习算法与数据结构。
+
+**浪子神剑** 会每天更新面试题，以面试题为驱动来带动大家学习，坚持每天学习与思考，每天进步一点！
+
+扫描上方二维码，关注 **jsliang** 的公众号（左）和 **浪子神剑** 的公众号（右），让我们一起折腾！
+

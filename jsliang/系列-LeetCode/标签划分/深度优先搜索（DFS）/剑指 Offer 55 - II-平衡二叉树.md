@@ -1,0 +1,159 @@
+剑指 Offer 55 - II - 平衡二叉树
+===
+
+> Create by **jsliang** on **2020-08-23 21:12:09**  
+> Recently revised in **2020-08-23 21:52:43**
+
+## 一 目录
+
+**不折腾的前端，和咸鱼有什么区别**
+
+| 目录 |
+| --- |
+| [一 目录](#chapter-one) |
+| [二 题目](#chapter-two) |
+| [三 解题思路](#chapter-three) |
+| [四 解题套路](#chapter-four) |
+
+## 二 题目
+
+
+
+```
+输入一棵二叉树的根节点，
+判断该树是不是平衡二叉树。
+
+如果某二叉树中任意节点的左右子树的深度相差不超过 1，
+那么它就是一棵平衡二叉树。
+
+示例 1:
+
+给定二叉树 [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+
+示例 2:
+
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+
+限制：
+
+* 1 <= 树的结点个数 <= 10000
+* 注意：本题与主站 110 题相同：https://leetcode-cn.com/problems/balanced-binary-tree/
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+```
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+
+};
+```
+
+根据上面的已知函数，小伙伴们可以先尝试破解本题，确定了自己的答案后再看下面代码。
+
+## 三 解题思路
+
+
+
+* 递归
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+const isBalanced = (root) => {
+  // 1. 设置结果集
+  let result = true;
+
+  // 3. 递归
+  const recursion = (root) => {
+    // 3.1 如果没有下一个节点了，返回 0
+    if (!root) {
+      return 0;
+    }
+    // 3.2 当前层 + 1
+    const left = recursion(root.left) + 1;
+    const right = recursion(root.right) + 1;
+    // 3.3 比较两棵树的深度
+    if (Math.abs(left - right) > 1) {
+      result = false;
+    }
+    // 3.4 返回这棵树最深的深度
+    return Math.max(left, right);
+  };
+  // 2. 递归这棵树
+  recursion(root);
+
+  // 4. 返回结果
+  return result;
+};
+
+const root = {
+  val: 3,
+  left: { val: 9, left: null, right: null },
+  right: {
+    val: 20,
+    left: { val: 15, left: null, right: null },
+    right: { val: 7, left: null, right: null },
+  },
+};
+
+console.log(isBalanced(root));
+```
+
+## 四 套路分析
+
+
+
+本题暂未发现任何套路，如果有但是 **jsliang** 后面发现了的话，会在 GitHub 进行补充。
+
+如果小伙伴有更好的思路想法，或者没看懂其中某种解法，欢迎评论留言或者私聊 **jsliang**~
+
+---
+
+**不折腾的前端，和咸鱼有什么区别！**
+
+![图](https://github.com/LiangJunrong/document-library/blob/master/public-repertory/img/z-index-small.png?raw=true)
+
+**jsliang** 会每天更新一道 LeetCode 题解，从而帮助小伙伴们夯实原生 JS 基础，了解与学习算法与数据结构。
+
+**浪子神剑** 会每天更新面试题，以面试题为驱动来带动大家学习，坚持每天学习与思考，每天进步一点！
+
+扫描上方二维码，关注 **jsliang** 的公众号（左）和 **浪子神剑** 的公众号（右），让我们一起折腾！
+
